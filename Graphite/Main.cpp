@@ -4,6 +4,7 @@
 
 #include "Textures/Textures.h"
 #include "Shaders/Shader.h"
+#include "Textures/stb_image.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
@@ -72,7 +73,9 @@ int main()
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
 
-    Texture2D texture = Texture2D("Textures/Images/container.jpg");
+    Texture2D containerTexture = Texture2D("Textures/Images/container.jpg");
+
+    Texture2D faceTexture = Texture2D("Textures/Images/awesomeface.png");
 
     // render loop
     // -----------
@@ -86,8 +89,11 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
 
         shaderProgram.Bind();
+        shaderProgram.SetUniform1i("texture1", 0);
+        shaderProgram.SetUniform1i("texture2", 1);
 
-        texture.Bind();
+        containerTexture.Bind(0);
+        faceTexture.Bind(1);
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 

@@ -13,8 +13,9 @@ Texture2D::~Texture2D()
     glDeleteTextures(1, &m_Id);
 }
 
-void Texture2D::Bind() const
+void Texture2D::Bind(unsigned int unit) const
 {
+    glActiveTexture(GL_TEXTURE0 + unit);
     glBindTexture(GL_TEXTURE_2D, m_Id);
 }
 
@@ -44,10 +45,18 @@ unsigned int Texture2D::GenTexture(const std::string& textureFile)
     
     // load image, create texture and generate mipmaps
     int width, height, nrChannels;
-    unsigned char* data = stbi_load("Textures/Images/container.jpg", &width, &height, &nrChannels, 0);
+    stbi_set_flip_vertically_on_load(true);
+    unsigned char* data = stbi_load(textureFile.c_str(), &width, &height, &nrChannels, 0);
     if (data)
     {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        if (textureFile.substr(textureFile.size() - 3) == "png")
+        {
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        }
+        else
+        {
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        }
         glGenerateMipmap(GL_TEXTURE_2D);
     }
     else

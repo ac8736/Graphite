@@ -18,6 +18,7 @@ public:
 	void Unbind() const;
 
 	void SetUniform4f(const std::string& name, const glm::vec4& value) const;
+	void SetUniform1i(const std::string& name, int value) const;
 
 	const unsigned int GetId() const;
 

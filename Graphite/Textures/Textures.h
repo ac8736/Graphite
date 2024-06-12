@@ -7,7 +7,7 @@ public:
 	Texture2D(const std::string& textureFile);
 	~Texture2D();
 
-	void Bind() const;
+	void Bind(unsigned int unit = 0) const;
 	void Unbind() const;
 
 	const unsigned int GetId() const;

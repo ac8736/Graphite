@@ -51,6 +51,12 @@ void Shader::SetUniform4f(const std::string& name, const glm::vec4& value) const
 	glUniform4f(location, value.x, value.y, value.z, value.w);
 }
 
+void Shader::SetUniform1i(const std::string& name, int value) const
+{
+	unsigned int location = glGetUniformLocation(m_Id, name.c_str());
+	glUniform1i(location, value);
+}
+
 const unsigned int Shader::GetId() const
 {
 	return m_Id;
