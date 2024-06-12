@@ -31,7 +31,6 @@ Shader::Shader(const ShaderSource& shaderSource)
 
 Shader::~Shader()
 {
-	std::cout << "Death\n";
 	glDeleteProgram(m_Id);
 }
 
@@ -55,6 +54,12 @@ void Shader::SetUniform1i(const std::string& name, int value) const
 {
 	unsigned int location = glGetUniformLocation(m_Id, name.c_str());
 	glUniform1i(location, value);
+}
+
+void Shader::SetUniformMatrix4fv(const std::string& name, const glm::mat4& value)
+{
+	unsigned int location = glGetUniformLocation(m_Id, name.c_str());
+	glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
 }
 
 const unsigned int Shader::GetId() const

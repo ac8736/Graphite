@@ -1,5 +1,6 @@
 #pragma once
 #include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <string>
 
 struct ShaderSource
@@ -19,6 +20,7 @@ public:
 
 	void SetUniform4f(const std::string& name, const glm::vec4& value) const;
 	void SetUniform1i(const std::string& name, int value) const;
+	void SetUniformMatrix4fv(const std::string& name, const glm::mat4& value);
 
 	const unsigned int GetId() const;
 
