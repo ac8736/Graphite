@@ -134,6 +134,7 @@
     <ClCompile Include="Dependencies\glm\glm.cppm" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="stb_image.cpp" />
     <ClCompile Include="Shaders\Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -426,6 +427,7 @@
     <ClInclude Include="Dependencies\glm\vec4.hpp" />
     <ClInclude Include="Dependencies\glm\vector_relational.hpp" />
     <ClInclude Include="Shaders\Shader.h" />
+    <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Dependencies\glm\detail\func_common.inl" />
