@@ -130,6 +130,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera\Camera.cpp" />
     <ClCompile Include="Dependencies\glm\detail\glm.cpp" />
     <ClCompile Include="Dependencies\glm\glm.cppm" />
     <ClCompile Include="glad.c" />
@@ -139,6 +140,7 @@
     <ClCompile Include="Textures\Textures.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera\Camera.h" />
     <ClInclude Include="Dependencies\glm\common.hpp" />
     <ClInclude Include="Dependencies\glm\detail\compute_common.hpp" />
     <ClInclude Include="Dependencies\glm\detail\compute_vector_decl.hpp" />
