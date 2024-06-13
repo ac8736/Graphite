@@ -6,6 +6,8 @@
 #include "Shaders/Shader.h"
 #include "Textures/stb_image.h"
 #include "Camera/Camera.h"
+#include "Objects/VertexBufferObject.h"
+#include "Objects/VertexArrayObject.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
@@ -51,9 +53,6 @@ int main()
         return -1;
     }
 
-    ShaderSource shaderSource = Shader::ParseShaders("Shaders/Vertex/BasicVertex.shader", "Shaders/Fragment/BasicFragment.shader");
-    Shader shaderProgram = Shader(shaderSource);
-
     // set up vertex data (and buffer(s)) and configure vertex attributes
     float vertices[] = {
         -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
@@ -98,21 +97,20 @@ int main()
         -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
         -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
     };
-    unsigned int VBO, VAO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
 
-    glBindVertexArray(VAO);
+    VertexArrayObject VAO = VertexArrayObject();
+    VAO.Bind();
 
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
+    VertexBufferObject VBO = VertexBufferObject();
+    VBO.Bind();
+    VBO.SetData(sizeof(vertices), vertices, GL_STATIC_DRAW);
     // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
+    VAO.SetVertexAttrib(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
     // texture coord attribute
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
+    VAO.SetVertexAttrib(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+
+    ShaderSource shaderSource = Shader::ParseShaders("Shaders/Vertex/BasicVertex.shader", "Shaders/Fragment/BasicFragment.shader");
+    Shader shaderProgram = Shader(shaderSource);
 
     Texture2D containerTexture = Texture2D("Textures/Images/container.jpg");
     Texture2D faceTexture = Texture2D("Textures/Images/awesomeface.png");
@@ -166,7 +164,8 @@ int main()
 
         containerTexture.Bind(0);
         faceTexture.Bind(1);
-        glBindVertexArray(VAO);
+        VAO.Bind();
+
         //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         for (unsigned int i = 0; i < 10; i++)
         {
@@ -189,8 +188,7 @@ int main()
         glfwPollEvents();
     }
 
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
+    //glDeleteVertexArrays(1, &VAO);
     //glDeleteBuffers(1, &EBO);
 
     glfwTerminate();
