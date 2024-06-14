@@ -1,13 +1,16 @@
 #include "Cube.h"
 
-Cube::Cube() : m_ModelMatrix(glm::mat4(1.0f))
+Cube::Cube(bool includeTextures) : m_ModelMatrix(glm::mat4(1.0f))
 {
 	m_VAO.Bind();
 	m_VBO.Bind();
 	m_VBO.SetData(sizeof(m_Vertices), m_Vertices, GL_STATIC_DRAW);
 
 	m_VAO.SetVertexAttrib(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-	m_VAO.SetVertexAttrib(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+	if (includeTextures)
+	{
+		m_VAO.SetVertexAttrib(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+	}
 
 	m_EBO.Bind();
 	m_EBO.SetIndices(sizeof(m_Indices), m_Indices, GL_STATIC_DRAW);

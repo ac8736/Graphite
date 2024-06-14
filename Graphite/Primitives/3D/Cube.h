@@ -13,7 +13,7 @@
 class Cube
 {
 public:
-	Cube();
+	Cube(bool includeTextures);
     ~Cube();
 
     void Bind() const;

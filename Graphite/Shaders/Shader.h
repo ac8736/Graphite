@@ -18,9 +18,12 @@ public:
 	void Bind() const;
 	void Unbind() const;
 
-	void SetUniform4f(const std::string& name, const glm::vec4& value) const;
 	void SetUniform1i(const std::string& name, int value) const;
-	void SetUniformMatrix4fv(const std::string& name, const glm::mat4& value);
+
+	void SetUniform3f(const std::string& name, const glm::vec3& value) const;
+	void SetUniform4f(const std::string& name, const glm::vec4& value) const;
+
+	void SetUniformMatrix4fv(const std::string& name, const glm::mat4& value) const;
 
 	inline const unsigned int GetId() const { return m_Id; }
 

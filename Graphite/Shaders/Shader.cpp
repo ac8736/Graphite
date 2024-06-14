@@ -44,6 +44,12 @@ void Shader::Unbind() const
 	glUseProgram(0);
 }
 
+void Shader::SetUniform3f(const std::string& name, const glm::vec3& value) const
+{
+	unsigned int location = glGetUniformLocation(m_Id, name.c_str());
+	glUniform3f(location, value.x, value.y, value.z);
+}
+
 void Shader::SetUniform4f(const std::string& name, const glm::vec4& value) const
 {
 	unsigned int location = glGetUniformLocation(m_Id, name.c_str());
@@ -56,7 +62,7 @@ void Shader::SetUniform1i(const std::string& name, int value) const
 	glUniform1i(location, value);
 }
 
-void Shader::SetUniformMatrix4fv(const std::string& name, const glm::mat4& value)
+void Shader::SetUniformMatrix4fv(const std::string& name, const glm::mat4& value) const
 {
 	unsigned int location = glGetUniformLocation(m_Id, name.c_str());
 	glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));

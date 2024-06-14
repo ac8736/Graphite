@@ -1371,5 +1371,8 @@
     <None Include="Dependencies\glm\gtx\float_notmalize.inl">
       <Filter>Header Files</Filter>
     </None>
+    <None Include="Shaders\Vertex\TextureVertex.shader" />
+    <None Include="Shaders\Fragment\LightingFragment.shader" />
+    <None Include="Shaders\Fragment\LightSourceFragment.shader" />
   </ItemGroup>
 </Project>

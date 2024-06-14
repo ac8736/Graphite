@@ -24,6 +24,8 @@ void glfwInitWindow();
 const float SCR_WIDTH = 800.0f;
 const float SCR_HEIGHT = 600.0f;
 
+glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
+
 // Camera
 Camera camera(SCR_WIDTH / 2.0, SCR_HEIGHT / 2.0, glm::vec3(0.0f, 0.0f, 3.0f));
 
@@ -52,15 +54,16 @@ int main()
         return -1;
     }
 
-    Shader shaderProgram = 
-        Shader(Shader::ParseShaders("Shaders/Vertex/BasicVertex.shader", "Shaders/Fragment/BasicFragment.shader"));
+    Shader lightingShader =
+        Shader(Shader::ParseShaders("Shaders/Vertex/BasicVertex.shader", "Shaders/Fragment/LightingFragment.shader"));
 
-    Texture2D containerTexture = Texture2D("Textures/Images/container.jpg");
-    Texture2D faceTexture = Texture2D("Textures/Images/awesomeface.png");
+    Shader lightSourceShader =
+        Shader(Shader::ParseShaders("Shaders/Vertex/BasicVertex.shader", "Shaders/Fragment/LightSourceFragment.shader"));
 
-    Cube cube = Cube();
-    Pyramid pyramid = Pyramid();
-    pyramid.Translate(glm::vec3(0.0f, 5.0f, 0.0f));
+    Cube cube = Cube(false);
+    Cube LightSource = Cube(false);
+    LightSource.Translate(lightPos);
+    LightSource.Scale(glm::vec3(0.2f));
 
     glEnable(GL_DEPTH_TEST);
     // render loop
@@ -76,24 +79,23 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        glm::mat4 projection;
-        projection = glm::perspective(glm::radians(camera.GetZoom()), 800.0f / 600.0f, 0.1f, 100.0f);
-
-        shaderProgram.Bind();
-        shaderProgram.SetUniform1i("texture1", 0);
-        shaderProgram.SetUniform1i("texture2", 1);
-
+        glm::mat4 projection = glm::perspective(glm::radians(camera.GetZoom()), 800.0f / 600.0f, 0.1f, 100.0f);
         // camera/view transformation
         glm::mat4 view = camera.GetViewMatrix();
 
-        shaderProgram.SetUniformMatrix4fv("view", view);
-        shaderProgram.SetUniformMatrix4fv("projection", projection);
+        lightingShader.Bind();
+        lightingShader.SetUniformMatrix4fv("view", view);
+        lightingShader.SetUniformMatrix4fv("projection", projection);
+        lightingShader.SetUniform3f("objectColor", glm::vec3(1.0f, 0.5f, 0.31f));
+        lightingShader.SetUniform3f("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+        cube.Draw(lightingShader);
+        lightingShader.Unbind();
 
-        containerTexture.Bind(0);
-        faceTexture.Bind(1);
-
-        cube.Draw(shaderProgram);
-        pyramid.Draw(shaderProgram);
+        lightSourceShader.Bind();
+        lightSourceShader.SetUniformMatrix4fv("view", view);
+        lightSourceShader.SetUniformMatrix4fv("projection", projection);
+        LightSource.Draw(lightSourceShader);
+        lightSourceShader.Unbind();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
