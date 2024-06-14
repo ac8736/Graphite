@@ -56,14 +56,14 @@ int main()
 
     Shader lightingShader =
         Shader(Shader::ParseShaders("Shaders/Vertex/PhongVertex.shader", "Shaders/Fragment/LightingFragment.shader"));
-
     Shader lightSourceShader =
-        Shader(Shader::ParseShaders("Shaders/Vertex/PhongVertex.shader", "Shaders/Fragment/LightSourceFragment.shader"));
+        Shader(Shader::ParseShaders("Shaders/Vertex/TextureVertex.shader", "Shaders/Fragment/LightSourceFragment.shader"));
 
     Texture2D containerTexture = Texture2D("Textures/Images/container.jpg");
+    Texture2D lampTexture = Texture2D("Textures/Images/lamp.jpg");
 
     Cube cube = Cube(true, true);
-    Cube LightSource = Cube(false, false);
+    Cube LightSource = Cube(true, false);
     LightSource.Scale(glm::vec3(0.3f));
 
     glEnable(GL_DEPTH_TEST);
@@ -84,11 +84,6 @@ int main()
         // camera/view transformation
         glm::mat4 view = camera.GetViewMatrix();
 
-        float radius = 10.0f;
-        lightPos.x = radius * cos(glfwGetTime());
-        lightPos.z = radius * sin(glfwGetTime());
-        LightSource.ResetPosition();
-        LightSource.Translate(lightPos);
 
         lightingShader.Bind();
         lightingShader.SetUniformMatrix4fv("view", view);
@@ -103,10 +98,18 @@ int main()
         lightingShader.Unbind();
         containerTexture.Unbind();
 
+        float radius = 10.0f;
+        lightPos.x = radius * cos(glfwGetTime());
+        lightPos.z = radius * sin(glfwGetTime());
+        LightSource.ResetPosition();
+        LightSource.Translate(lightPos);
         lightSourceShader.Bind();
+        lampTexture.Bind(0);
         lightSourceShader.SetUniformMatrix4fv("view", view);
         lightSourceShader.SetUniformMatrix4fv("projection", projection);
+        lightSourceShader.SetUniform1i("texture1", 0);
         LightSource.Draw(lightSourceShader);
+        lampTexture.Unbind();
         lightSourceShader.Unbind();
 
         glfwSwapBuffers(window);
