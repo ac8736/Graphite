@@ -587,7 +587,7 @@
     <None Include="Shaders\Fragment\BasicFragment.shader" />
     <None Include="Shaders\Fragment\LightingFragment.shader" />
     <None Include="Shaders\Fragment\LightSourceFragment.shader" />
-    <None Include="Shaders\Vertex\BasicVertex.shader" />
+    <None Include="Shaders\Vertex\PhongVertex.shader" />
     <None Include="Shaders\Vertex\TextureVertex.shader" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -55,14 +55,15 @@ int main()
     }
 
     Shader lightingShader =
-        Shader(Shader::ParseShaders("Shaders/Vertex/BasicVertex.shader", "Shaders/Fragment/LightingFragment.shader"));
+        Shader(Shader::ParseShaders("Shaders/Vertex/PhongVertex.shader", "Shaders/Fragment/LightingFragment.shader"));
 
     Shader lightSourceShader =
-        Shader(Shader::ParseShaders("Shaders/Vertex/BasicVertex.shader", "Shaders/Fragment/LightSourceFragment.shader"));
+        Shader(Shader::ParseShaders("Shaders/Vertex/PhongVertex.shader", "Shaders/Fragment/LightSourceFragment.shader"));
 
-    Cube cube = Cube(false, true);
+    Texture2D containerTexture = Texture2D("Textures/Images/container.jpg");
+
+    Cube cube = Cube(true, true);
     Cube LightSource = Cube(false, false);
-    //LightSource.Translate(lightPos);
     LightSource.Scale(glm::vec3(0.3f));
 
     glEnable(GL_DEPTH_TEST);
@@ -96,8 +97,11 @@ int main()
         lightingShader.SetUniform3f("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
         lightingShader.SetUniform3f("lightPos", lightPos);
         lightingShader.SetUniform3f("viewPos", camera.GetPosition());
+        containerTexture.Bind(0);
+        lightingShader.SetUniform1i("texture1", 0);
         cube.Draw(lightingShader);
         lightingShader.Unbind();
+        containerTexture.Unbind();
 
         lightSourceShader.Bind();
         lightSourceShader.SetUniformMatrix4fv("view", view);

@@ -955,7 +955,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\Vertex\BasicVertex.shader" />
+    <None Include="Shaders\Vertex\PhongVertex.shader" />
     <None Include="Shaders\Fragment\BasicFragment.shader" />
     <None Include="Dependencies\glm\detail\type_vec1.inl">
       <Filter>Header Files</Filter>
