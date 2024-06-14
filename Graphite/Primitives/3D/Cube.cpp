@@ -42,3 +42,11 @@ void Cube::Scale(glm::vec3 scale)
 {
 	m_ModelMatrix = glm::scale(m_ModelMatrix, scale);
 }
+
+void Cube::Draw(Shader& shader) const
+{
+	Bind();
+	shader.SetUniformMatrix4fv("model", m_ModelMatrix);
+	glDrawElements(GL_TRIANGLES, GetIndicesCount(), GL_UNSIGNED_INT, 0);
+	Unbind();
+}

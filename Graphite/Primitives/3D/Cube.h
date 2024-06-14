@@ -2,10 +2,12 @@
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
 #include <memory>
+#include <vector>
 
 #include "Objects/VertexArrayObject.h"
 #include "Objects/VertexBufferObject.h"
 #include "Objects/ElementBufferObject.h"
+#include "Shaders/Shader.h"
 
 class Cube
 {
@@ -22,6 +24,8 @@ public:
     void Translate(glm::vec3 translate);
     void Rotate(float angle);
     void Scale(glm::vec3 scale);
+
+    void Draw(Shader& shader) const;
 
 private:
     VertexArrayObject m_VAO;

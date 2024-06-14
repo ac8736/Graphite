@@ -1,6 +1,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <vector>
 
 #include "Textures/Textures.h"
 #include "Shaders/Shader.h"
@@ -50,8 +51,8 @@ int main()
         return -1;
     }
 
-    ShaderSource shaderSource = Shader::ParseShaders("Shaders/Vertex/BasicVertex.shader", "Shaders/Fragment/BasicFragment.shader");
-    Shader shaderProgram = Shader(shaderSource);
+    Shader shaderProgram = 
+        Shader(Shader::ParseShaders("Shaders/Vertex/BasicVertex.shader", "Shaders/Fragment/BasicFragment.shader"));
 
     Texture2D containerTexture = Texture2D("Textures/Images/container.jpg");
     Texture2D faceTexture = Texture2D("Textures/Images/awesomeface.png");
@@ -88,10 +89,7 @@ int main()
         containerTexture.Bind(0);
         faceTexture.Bind(1);
 
-        cube.Bind();
-        shaderProgram.SetUniformMatrix4fv("model", cube.GetModelMatrix());
-        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-        cube.Unbind();
+        cube.Draw(shaderProgram);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
