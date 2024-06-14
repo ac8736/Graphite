@@ -35,6 +35,7 @@ public:
     inline float GetZoom() const { return m_Zoom; }
     inline float GetLastX() const { return m_LastX; }
     inline float GetLastY() const { return m_LastY; }
+    inline glm::vec3 GetPosition() const { return m_Position; }
     inline bool IsFirstMouse() const { return m_FirstMouse; }
 private:
     void UpdateCameraVectors();

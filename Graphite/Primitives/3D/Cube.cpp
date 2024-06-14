@@ -1,15 +1,19 @@
 #include "Cube.h"
 
-Cube::Cube(bool includeTextures) : m_ModelMatrix(glm::mat4(1.0f))
+Cube::Cube(bool includeTextures, bool includeNormals) : m_ModelMatrix(glm::mat4(1.0f))
 {
 	m_VAO.Bind();
 	m_VBO.Bind();
 	m_VBO.SetData(sizeof(m_Vertices), m_Vertices, GL_STATIC_DRAW);
 
-	m_VAO.SetVertexAttrib(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+	m_VAO.SetVertexAttrib(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 	if (includeTextures)
 	{
-		m_VAO.SetVertexAttrib(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+		m_VAO.SetVertexAttrib(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	}
+	if (includeNormals)
+	{
+		m_VAO.SetVertexAttrib(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
 	}
 
 	m_EBO.Bind();
@@ -31,6 +35,28 @@ void Cube::Bind() const
 void Cube::Unbind() const
 {
 	m_VAO.Unbind();
+}
+
+void Cube::ResetPosition()
+{
+	// Extract the scaling components
+	glm::vec3 scale{};
+	scale.x = glm::length(glm::vec3(m_ModelMatrix[0])); // Length of the first column vector
+	scale.y = glm::length(glm::vec3(m_ModelMatrix[1])); // Length of the second column vector
+	scale.z = glm::length(glm::vec3(m_ModelMatrix[2])); // Length of the third column vector
+
+	// Normalize the columns to remove the scaling
+	m_ModelMatrix[0] = glm::normalize(m_ModelMatrix[0]);
+	m_ModelMatrix[1] = glm::normalize(m_ModelMatrix[1]);
+	m_ModelMatrix[2] = glm::normalize(m_ModelMatrix[2]);
+
+	// Reset the translation components
+	m_ModelMatrix[3] = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+
+	// Reapply the scaling
+	m_ModelMatrix[0] *= scale.x;
+	m_ModelMatrix[1] *= scale.y;
+	m_ModelMatrix[2] *= scale.z;
 }
 
 void Cube::Translate(glm::vec3 translation)

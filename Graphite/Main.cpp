@@ -60,10 +60,10 @@ int main()
     Shader lightSourceShader =
         Shader(Shader::ParseShaders("Shaders/Vertex/BasicVertex.shader", "Shaders/Fragment/LightSourceFragment.shader"));
 
-    Cube cube = Cube(false);
-    Cube LightSource = Cube(false);
-    LightSource.Translate(lightPos);
-    LightSource.Scale(glm::vec3(0.2f));
+    Cube cube = Cube(false, true);
+    Cube LightSource = Cube(false, false);
+    //LightSource.Translate(lightPos);
+    LightSource.Scale(glm::vec3(0.3f));
 
     glEnable(GL_DEPTH_TEST);
     // render loop
@@ -76,18 +76,26 @@ int main()
         processInput(window);
 
         // render
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glm::mat4 projection = glm::perspective(glm::radians(camera.GetZoom()), 800.0f / 600.0f, 0.1f, 100.0f);
         // camera/view transformation
         glm::mat4 view = camera.GetViewMatrix();
 
+        float radius = 10.0f;
+        lightPos.x = radius * cos(glfwGetTime());
+        lightPos.z = radius * sin(glfwGetTime());
+        LightSource.ResetPosition();
+        LightSource.Translate(lightPos);
+
         lightingShader.Bind();
         lightingShader.SetUniformMatrix4fv("view", view);
         lightingShader.SetUniformMatrix4fv("projection", projection);
         lightingShader.SetUniform3f("objectColor", glm::vec3(1.0f, 0.5f, 0.31f));
         lightingShader.SetUniform3f("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+        lightingShader.SetUniform3f("lightPos", lightPos);
+        lightingShader.SetUniform3f("viewPos", camera.GetPosition());
         cube.Draw(lightingShader);
         lightingShader.Unbind();
 
