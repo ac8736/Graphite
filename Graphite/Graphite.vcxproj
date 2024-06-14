@@ -104,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Graphite\Dependencies;$(SolutionDir)Graphite\Dependencies\GLFW\include;$(SolutionDir)Graphite\Dependencies\glad\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Graphite;$(SolutionDir)Graphite\Dependencies;$(SolutionDir)Graphite\Dependencies\GLFW\include;$(SolutionDir)Graphite\Dependencies\glad\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -138,9 +138,11 @@
     <ClCompile Include="Objects\ElementBufferObject.cpp" />
     <ClCompile Include="Objects\VertexArrayObject.cpp" />
     <ClCompile Include="Objects\VertexBufferObject.cpp" />
+    <ClCompile Include="Primitives\3D\Cube.cpp" />
     <ClCompile Include="Textures\stb_image.cpp" />
     <ClCompile Include="Shaders\Shader.cpp" />
     <ClCompile Include="Textures\Textures.cpp" />
+    <ClCompile Include="Utils\Deltatime\DeltaTime.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera\Camera.h" />
@@ -435,9 +437,11 @@
     <ClInclude Include="Objects\ElementBufferObject.h" />
     <ClInclude Include="Objects\VertexArrayObject.h" />
     <ClInclude Include="Objects\VertexBufferObject.h" />
+    <ClInclude Include="Primitives\3D\Cube.h" />
     <ClInclude Include="Shaders\Shader.h" />
     <ClInclude Include="Textures\stb_image.h" />
     <ClInclude Include="Textures\Textures.h" />
+    <ClInclude Include="Utils\Deltatime\DeltaTime.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Dependencies\glm\detail\func_common.inl" />

@@ -9,6 +9,8 @@
 #include "Objects/VertexBufferObject.h"
 #include "Objects/VertexArrayObject.h"
 #include "Objects/ElementBufferObject.h"
+#include "Primitives/3D/Cube.h"
+#include "Utils/Deltatime/DeltaTime.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
@@ -20,15 +22,13 @@ void glfwInitWindow();
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
-// delta time
-float deltaTime = 0.0f;	// Time between current frame and last frame
-float lastFrame = 0.0f; // Time of last frame
-
 // Camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 bool firstMouse = true;
 float lastX = 800.0f / 2.0;
 float lastY = 600.0 / 2.0;
+
+DeltaTime deltaTime = DeltaTime();
 
 int main()
 {
@@ -46,6 +46,7 @@ int main()
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
     glfwSetScrollCallback(window, scroll_callback);
+    glfwSwapInterval(1);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
@@ -53,90 +54,20 @@ int main()
         return -1;
     }
 
-    // set up vertex data (and buffer(s)) and configure vertex attributes
-    float vertices[] = {
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-         0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-
-        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-    };
-    unsigned int indices[] = {
-        0, 1, 3,    // face 1
-        1, 2, 3,
-
-        4, 5, 7,    // face 2
-        5, 6, 7,
-
-        8, 9, 11,   // face 3
-        9, 10, 11,
-
-        12, 13, 15, // face 4
-        13, 14, 15,
-
-        16, 17, 19, // face 5
-        17, 18, 19,
-
-        20, 21, 23, // face 6
-        21, 22, 23
-    };
-
-    VertexArrayObject VAO = VertexArrayObject();
-    VAO.Bind();
-
-    VertexBufferObject VBO = VertexBufferObject();
-    VBO.Bind();
-    VBO.SetData(sizeof(vertices), vertices, GL_STATIC_DRAW);
-    // position attribute
-    VAO.SetVertexAttrib(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-    // texture coord attribute
-    VAO.SetVertexAttrib(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-
-    ElementBufferObject EBO = ElementBufferObject();
-    EBO.Bind();
-    EBO.SetIndices(sizeof(indices), indices, GL_STATIC_DRAW);
-
-    VAO.Unbind();
-
     ShaderSource shaderSource = Shader::ParseShaders("Shaders/Vertex/BasicVertex.shader", "Shaders/Fragment/BasicFragment.shader");
     Shader shaderProgram = Shader(shaderSource);
 
     Texture2D containerTexture = Texture2D("Textures/Images/container.jpg");
     Texture2D faceTexture = Texture2D("Textures/Images/awesomeface.png");
 
+    Cube cube = Cube();
 
     glEnable(GL_DEPTH_TEST);
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
     {
-        float currentFrame = glfwGetTime();
-        deltaTime = currentFrame - lastFrame;
-        lastFrame = currentFrame;
+        deltaTime.UpdateDeltaTime(glfwGetTime());
 
         // input
         processInput(window);
@@ -160,12 +91,11 @@ int main()
 
         containerTexture.Bind(0);
         faceTexture.Bind(1);
-        VAO.Bind();
 
-        glm::mat4 model = glm::mat4(1.0f);
-        shaderProgram.SetUniformMatrix4fv("model", model);
-
+        cube.Bind();
+        shaderProgram.SetUniformMatrix4fv("model", cube.GetModelMatrix());
         glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+        cube.Unbind();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -184,27 +114,27 @@ void processInput(GLFWwindow* window)
 
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
     {
-        camera.ProcessKeyboard(FORWARD, deltaTime);
+        camera.ProcessKeyboard(FORWARD, deltaTime.GetDeltaTime());
     }
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
     {
-        camera.ProcessKeyboard(BACKWARD, deltaTime);
+        camera.ProcessKeyboard(BACKWARD, deltaTime.GetDeltaTime());
     }
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
     {
-        camera.ProcessKeyboard(LEFT, deltaTime);
+        camera.ProcessKeyboard(LEFT, deltaTime.GetDeltaTime());
     }
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
     {
-        camera.ProcessKeyboard(RIGHT, deltaTime);
+        camera.ProcessKeyboard(RIGHT, deltaTime.GetDeltaTime());
     }
     if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
     {
-        camera.ProcessKeyboard(DOWN, deltaTime);
+        camera.ProcessKeyboard(DOWN, deltaTime.GetDeltaTime());
     }
     if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
     {
-        camera.ProcessKeyboard(UP, deltaTime);
+        camera.ProcessKeyboard(UP, deltaTime.GetDeltaTime());
     }
 }
 
