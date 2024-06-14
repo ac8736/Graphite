@@ -19,14 +19,11 @@ void processInput(GLFWwindow* window);
 void glfwInitWindow();
 
 // settings
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
+const float SCR_WIDTH = 800.0f;
+const float SCR_HEIGHT = 600.0f;
 
 // Camera
-Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
-bool firstMouse = true;
-float lastX = 800.0f / 2.0;
-float lastY = 600.0 / 2.0;
+Camera camera(SCR_WIDTH / 2.0, SCR_HEIGHT / 2.0, glm::vec3(0.0f, 0.0f, 3.0f));
 
 DeltaTime deltaTime = DeltaTime();
 
@@ -148,18 +145,18 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
     float xpos = static_cast<float>(xposIn);
     float ypos = static_cast<float>(yposIn);
 
-    if (firstMouse)
+    if (camera.IsFirstMouse())
     {
-        lastX = xpos;
-        lastY = ypos;
-        firstMouse = false;
+        camera.SetLastX(xpos);
+        camera.SetLastY(ypos);
+        camera.SetFirstMouse(false);
     }
 
-    float xoffset = xpos - lastX;
-    float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+    float xoffset = xpos - camera.GetLastX();
+    float yoffset = camera.GetLastY() - ypos; // reversed since y-coordinates go from bottom to top
 
-    lastX = xpos;
-    lastY = ypos;
+    camera.SetLastX(xpos);
+    camera.SetLastY(ypos);
 
     camera.ProcessMouseMovement(xoffset, yoffset);
 }

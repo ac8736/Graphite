@@ -1,7 +1,7 @@
 #include "Camera.h"
 
-Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch)
-    : m_Front(glm::vec3(0.0f, 0.0f, -1.0f)), m_MovementSpeed(DefaultCamera::MovementSpeed), m_MouseSensitivity(DefaultCamera::Sensitivity), m_Zoom(DefaultCamera::Zoom)
+Camera::Camera(float lastX, float lastY, glm::vec3 position, glm::vec3 up, float yaw, float pitch)
+    : m_LastX(lastX), m_LastY(lastY), m_Front(glm::vec3(0.0f, 0.0f, -1.0f)), m_MovementSpeed(DefaultCamera::MovementSpeed), m_MouseSensitivity(DefaultCamera::Sensitivity), m_Zoom(DefaultCamera::Zoom)
 {
     m_Position = position;
     m_WorldUp = up;
@@ -73,9 +73,19 @@ void Camera::ProcessMouseScroll(float yoffset)
     }
 }
 
-float Camera::GetZoom() const
+void Camera::SetFirstMouse(bool set)
 {
-    return m_Zoom;
+    m_FirstMouse = set;
+}
+
+void Camera::SetLastX(float x)
+{
+    m_LastX = x;
+}
+
+void Camera::SetLastY(float y)
+{
+    m_LastY = y;
 }
 
 glm::mat4 Camera::GetViewMatrix() const
