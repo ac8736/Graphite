@@ -135,6 +135,7 @@
     <ClCompile Include="Dependencies\glm\glm.cppm" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Objects\ElementBufferObject.cpp" />
     <ClCompile Include="Objects\VertexArrayObject.cpp" />
     <ClCompile Include="Objects\VertexBufferObject.cpp" />
     <ClCompile Include="Textures\stb_image.cpp" />
@@ -431,6 +432,7 @@
     <ClInclude Include="Dependencies\glm\vec3.hpp" />
     <ClInclude Include="Dependencies\glm\vec4.hpp" />
     <ClInclude Include="Dependencies\glm\vector_relational.hpp" />
+    <ClInclude Include="Objects\ElementBufferObject.h" />
     <ClInclude Include="Objects\VertexArrayObject.h" />
     <ClInclude Include="Objects\VertexBufferObject.h" />
     <ClInclude Include="Shaders\Shader.h" />
