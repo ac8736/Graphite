@@ -22,7 +22,7 @@ public:
 	void SetUniform1i(const std::string& name, int value) const;
 	void SetUniformMatrix4fv(const std::string& name, const glm::mat4& value);
 
-	const unsigned int GetId() const;
+	inline const unsigned int GetId() const { return m_Id; }
 
 	unsigned int CompileShader(unsigned int type, const std::string& shaderSource);
 

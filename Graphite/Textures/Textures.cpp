@@ -24,11 +24,6 @@ void Texture2D::Unbind() const
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-const unsigned int Texture2D::GetId() const
-{
-    return m_Id;
-}
-
 unsigned int Texture2D::GenTexture(const std::string& textureFile)
 {
     unsigned int texture;

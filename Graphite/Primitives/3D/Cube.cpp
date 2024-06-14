@@ -28,16 +28,6 @@ void Cube::Unbind() const
 	m_VAO.Unbind();
 }
 
-glm::mat4 Cube::GetModelMatrix() const
-{
-	return m_ModelMatrix;
-}
-
-unsigned int Cube::GetIndicesCount() const
-{
-	return sizeof(m_Indices) / sizeof(float);
-}
-
 void Cube::Translate(glm::vec3 translation)
 {
 	m_ModelMatrix = glm::translate(m_ModelMatrix, translation);

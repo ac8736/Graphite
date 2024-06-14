@@ -62,11 +62,6 @@ void Shader::SetUniformMatrix4fv(const std::string& name, const glm::mat4& value
 	glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
 }
 
-const unsigned int Shader::GetId() const
-{
-	return m_Id;
-}
-
 unsigned int Shader::CompileShader(unsigned int type, const std::string& shaderSource)
 {
 	const char* shader = shaderSource.c_str();

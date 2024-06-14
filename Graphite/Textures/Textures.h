@@ -10,7 +10,7 @@ public:
 	void Bind(unsigned int unit = 0) const;
 	void Unbind() const;
 
-	const unsigned int GetId() const;
+	inline const unsigned int GetId() const { return m_Id; }
 
 	unsigned int GenTexture(const std::string& textureFile);
 private:

@@ -16,8 +16,8 @@ public:
     void Bind() const;
     void Unbind() const;
 
-    glm::mat4 GetModelMatrix() const;
-    unsigned int GetIndicesCount() const;
+    inline const glm::mat4 GetModelMatrix() const { return m_ModelMatrix; }
+    inline const unsigned int GetIndicesCount() const { return sizeof(m_Indices) / sizeof(float); }
 
     void Translate(glm::vec3 translate);
     void Rotate(float angle);
