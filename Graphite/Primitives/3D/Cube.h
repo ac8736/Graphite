@@ -1,4 +1,5 @@
 #pragma once
+
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
 #include <memory>
@@ -19,7 +20,7 @@ public:
     void Unbind() const;
 
     inline const glm::mat4 GetModelMatrix() const { return m_ModelMatrix; }
-    inline const unsigned int GetIndicesCount() const { return sizeof(m_Indices) / sizeof(float); }
+    inline const unsigned int GetIndicesCount() const { return sizeof(m_Indices) / sizeof(unsigned int); }
 
     void Translate(glm::vec3 translate);
     void Rotate(float angle);

@@ -11,6 +11,7 @@
 #include "Objects/VertexArrayObject.h"
 #include "Objects/ElementBufferObject.h"
 #include "Primitives/3D/Cube.h"
+#include "Primitives/3D/Pyramid.h"
 #include "Utils/Deltatime/DeltaTime.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -58,6 +59,8 @@ int main()
     Texture2D faceTexture = Texture2D("Textures/Images/awesomeface.png");
 
     Cube cube = Cube();
+    Pyramid pyramid = Pyramid();
+    pyramid.Translate(glm::vec3(0.0f, 5.0f, 0.0f));
 
     glEnable(GL_DEPTH_TEST);
     // render loop
@@ -90,6 +93,7 @@ int main()
         faceTexture.Bind(1);
 
         cube.Draw(shaderProgram);
+        pyramid.Draw(shaderProgram);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

@@ -1,6 +1,6 @@
-#include "Cube.h"
+#include "Pyramid.h"
 
-Cube::Cube() : m_ModelMatrix(glm::mat4(1.0f))
+Pyramid::Pyramid() : m_ModelMatrix(glm::mat4(1.0f))
 {
 	m_VAO.Bind();
 	m_VBO.Bind();
@@ -16,36 +16,36 @@ Cube::Cube() : m_ModelMatrix(glm::mat4(1.0f))
 	m_EBO.Unbind();
 }
 
-Cube::~Cube()
+Pyramid::~Pyramid()
 {
 }
 
-void Cube::Bind() const
+void Pyramid::Bind() const
 {
 	m_VAO.Bind();
 }
 
-void Cube::Unbind() const
+void Pyramid::Unbind() const
 {
 	m_VAO.Unbind();
 }
 
-void Cube::Translate(glm::vec3 translation)
+void Pyramid::Translate(glm::vec3 translation)
 {
 	m_ModelMatrix = glm::translate(m_ModelMatrix, translation);
 }
 
-void Cube::Rotate(float angle)
+void Pyramid::Rotate(float angle)
 {
 	m_ModelMatrix = glm::rotate(m_ModelMatrix, glm::radians(angle), glm::vec3(0.0f, 0.0f, 1.0f));
 }
 
-void Cube::Scale(glm::vec3 scale)
+void Pyramid::Scale(glm::vec3 scale)
 {
 	m_ModelMatrix = glm::scale(m_ModelMatrix, scale);
 }
 
-void Cube::Draw(Shader& shader) const
+void Pyramid::Draw(Shader& shader) const
 {
 	Bind();
 	shader.SetUniformMatrix4fv("model", m_ModelMatrix);

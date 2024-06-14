@@ -139,6 +139,7 @@
     <ClCompile Include="Objects\VertexArrayObject.cpp" />
     <ClCompile Include="Objects\VertexBufferObject.cpp" />
     <ClCompile Include="Primitives\3D\Cube.cpp" />
+    <ClCompile Include="Primitives\3D\Pyramid.cpp" />
     <ClCompile Include="Textures\stb_image.cpp" />
     <ClCompile Include="Shaders\Shader.cpp" />
     <ClCompile Include="Textures\Textures.cpp" />
@@ -438,6 +439,7 @@
     <ClInclude Include="Objects\VertexArrayObject.h" />
     <ClInclude Include="Objects\VertexBufferObject.h" />
     <ClInclude Include="Primitives\3D\Cube.h" />
+    <ClInclude Include="Primitives\3D\Pyramid.h" />
     <ClInclude Include="Shaders\Shader.h" />
     <ClInclude Include="Textures\stb_image.h" />
     <ClInclude Include="Textures\Textures.h" />
