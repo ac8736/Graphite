@@ -37,3 +37,8 @@ void Cube::Rotate(float angle)
 {
 	m_ModelMatrix = glm::rotate(m_ModelMatrix, glm::radians(angle), glm::vec3(0.0f, 0.0f, 1.0f));
 }
+
+void Cube::Scale(glm::vec3 scale)
+{
+	m_ModelMatrix = glm::scale(m_ModelMatrix, scale);
+}

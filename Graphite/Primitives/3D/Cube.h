@@ -21,6 +21,7 @@ public:
 
     void Translate(glm::vec3 translate);
     void Rotate(float angle);
+    void Scale(glm::vec3 scale);
 
 private:
     VertexArrayObject m_VAO;
